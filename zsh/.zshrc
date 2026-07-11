@@ -47,17 +47,6 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey '^R' history-incremental-pattern-search-backward
 
 
-# Ctrl+R preserves what you typed and starts searching from there
-# history-incremental-search-backward-typed() {
-#   zle history-incremental-search-backward $BUFFER
-# }
-# zle -N history-incremental-search-backward-typed
-# bindkey '^R' history-incremental-search-backward-typed
-
-# source <(fzf --zsh)
-
-
-
 ###############
 ### COLORS
 ###############
@@ -72,3 +61,71 @@ alias egrep='egrep --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
+########################
+### Antidote Plugins ###
+########################
+
+# Antidote plugin manager
+# Source antidote (stow symlinks ~/.antidote to dotfiles/zsh/.antidote)
+source ~/.antidote/antidote.zsh
+
+# Load plugins listed in ~/.zsh_plugins.txt
+# Plugins are downloaded automatically on first run if missing
+antidote load
+
+###########################
+### Additional Software ###
+###########################
+
+# FZF
+if command -v fzf &>/dev/null; then
+    source <(fzf --zsh)
+elif [[ -o interactive ]]; then
+    local cmd=""
+    if [[ "$OSTYPE" == darwin* ]] && command -v brew &>/dev/null; then
+        cmd="brew install fzf"
+    elif command -v apt &>/dev/null; then
+        cmd="sudo apt install fzf"
+    elif command -v dnf &>/dev/null; then
+        cmd="sudo dnf install fzf"
+    elif command -v pacman &>/dev/null; then
+        cmd="sudo pacman -S fzf"
+    elif command -v nix-env &>/dev/null; then
+        cmd="nix-env -iA nixpkgs.fzf"
+    else
+        cmd="git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install"
+    fi
+
+    print -P "%F{yellow}▶ fzf not found.%f Install it for fuzzy Ctrl+R history search:"
+    print "  $cmd"
+    print ""
+fi
+
+# System info at startup (only for interactive shells)
+if [[ -o interactive ]]; then
+    if command -v fastfetch &>/dev/null; then
+        fastfetch
+    elif command -v neofetch &>/dev/null; then
+        neofetch
+    else
+        local cmd=""
+        if [[ "$OSTYPE" == darwin* ]] && command -v brew &>/dev/null; then
+            cmd="brew install fastfetch"
+        elif command -v apt &>/dev/null; then
+            cmd="sudo apt install fastfetch"
+        elif command -v dnf &>/dev/null; then
+            cmd="sudo dnf install fastfetch"
+        elif command -v pacman &>/dev/null; then
+            cmd="sudo pacman -S fastfetch"
+        elif command -v nix-env &>/dev/null; then
+            cmd="nix-env -iA nixpkgs.fastfetch"
+        else
+            cmd="cmake build from https://github.com/fastfetch-cli/fastfetch"
+        fi
+
+        print -P "%F{yellow}▶ fastfetch not found.%f Run this for a pretty system info display on login:"
+        print "  $cmd"
+        print ""
+    fi
+fi

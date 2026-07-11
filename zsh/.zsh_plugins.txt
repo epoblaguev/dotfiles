@@ -1,0 +1,7 @@
+# Fish-like autosuggestions
+zsh-users/zsh-autosuggestions
+
+# Fish-like syntax highlighting
+zsh-users/zsh-syntax-highlighting
+
+# Note: highlighting must be loaded last
