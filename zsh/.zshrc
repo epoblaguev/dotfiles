@@ -78,9 +78,18 @@ antidote load
 ### Additional Software ###
 ###########################
 
-# FZF
+# FZF - fuzzy finder integration
 if command -v fzf &>/dev/null; then
-    source <(fzf --zsh)
+    # Modern fzf (0.48+): generates scripts on the fly
+    if fzf --zsh &>/dev/null 2>&1; then
+        source <(fzf --zsh)
+    # Ubuntu 24.04 and older packaged fzf: static files
+    elif [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+        source /usr/share/doc/fzf/examples/key-bindings.zsh
+        [[ -f /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
+    elif [[ -f /usr/share/fzf/shell/key-bindings.zsh ]]; then
+        source /usr/share/fzf/shell/key-bindings.zsh
+    fi
 elif [[ -o interactive ]]; then
     local cmd=""
     if [[ "$OSTYPE" == darwin* ]] && command -v brew &>/dev/null; then
@@ -101,6 +110,7 @@ elif [[ -o interactive ]]; then
     print "  $cmd"
     print ""
 fi
+
 
 # System info at startup (only for interactive shells)
 if [[ -o interactive ]]; then
