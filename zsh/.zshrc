@@ -21,7 +21,7 @@ HISTFILE=~/.zsh_history
 autoload -Uz compinit && compinit
 
 # Case-insensitive is actually nice, but remove approximate (fuzzy) matching
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # List on first tab, select on second
 setopt menu_complete
