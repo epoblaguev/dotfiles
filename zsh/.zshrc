@@ -3,6 +3,9 @@
 # Bold green user@host, white colon, bold blue directory, white/gray $ or #
 PROMPT='%B%F{green}%n@%m%f%b:%B%F{blue}%~%f%b%(!.#.$) '
 
+# Path
+export PATH="$PATH:/snap/bin"
+
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
